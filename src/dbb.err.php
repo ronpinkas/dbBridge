@@ -46,13 +46,7 @@ USE \SoapFault;
 USE \DOMException;
 USE \JsonException;
 USE \SimpleXMLException;
-
-/*
-USE \DateTime;
-USE \DateTimeZone;
-USE \DateInterval;
-USE \DatePeriod;
-*/
+USE \ErrorException;
 
 /**
  * CLASS: dbBridgeException( string $message, int $code = 0, Exception $previous = null, string $file = 'unknown-source', int $line = 0 )
@@ -394,13 +388,13 @@ function exceptionInfo( Exception $e, bool $bStackTrace = false, bool $bExplode 
 }
 
 /**
- * FUNCTION: debugShow( string $message, int $debugFlags = debugFlags::SHOW ) : void
+ * FUNCTION: debugShow( string $message, int $debugFlags = debugFlags::DEBUG_ALWAYS ) : void
  * 
  * Shows a message on the screen if the debug level is masked ON.
  * 
  * Arguments:
  *  $message - the message to show
- *  $debugFlags - the debug flags
+ *  $debugFlags - the debug flags mask level required to log/show the message
  * 
  * Returns: void
  */
@@ -413,25 +407,18 @@ function debugShow( string $message, int $debugFlags = debugFlags::DEBUG_ALWAYS 
 }
 
 /**
- * FUNCTION: log_dbBridge( string $message, int $debugFlags = debugFlags::LOG_AND_SHOW ) : void
+ * FUNCTION: log_dbBridge( string $message, int $debugFlags = debugFlags::DEBUG_ALL ) : void
  * 
  * Logs a message to the file dbBridge.log and/or shows it on the screen.
  * 
  * Arguments:
  *  $message - the message to log/show
- *  $debugFlags - the debug flags
+ *  $debugFlags - the debug flags mask level required to log/show the message
  * 
  * Returns: void
  */
-function log_dbBridge( string $message, int $debugFlags = debugFlags::DEBUG_TRACE_LOG_AND_SHOW ) : void
+function log_dbBridge( string $message, int $debugFlags = debugFlags::DEBUG_ALWAYS ) : void
 {
-    /*
-    echo $message . PHP_EOL;    
-    echo $debugFlags . PHP_EOL;
-    echo debugFlags::asString( $debugFlags ) . PHP_EOL;    
-    echo "Log Mask Set: " . ( $debugFlags & debugFlags::$debugFlags ) . PHP_EOL;
-    */
-
     // If set
     if( $debugFlags & debugFlags::$debugLogFlags )
     {

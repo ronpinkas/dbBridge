@@ -30,7 +30,7 @@
  * - No support for User-defined Aggregates.
  *    
  * Copyright 2023 Ron[ny] Pinkas <ron@ronpinkas.com>
- * www - https://www.ronpinkas.com
+ * www - https://github.com/ronpinkas/dbBridge
  * 
  * This file contains dbAbstractor - the main class of the dbBridge package.
  * 
@@ -38,7 +38,7 @@
  * @version 0.8.0 (working version)
  * @license MIT License <https://opensource.org/licenses/MIT>
  * 
- * @link https://www.ronpinkas.com/dbBridge
+ * @link https://github.com/ronpinkas/dbBridge
  */
 declare( strict_types = 1 );
 namespace dbBridge;

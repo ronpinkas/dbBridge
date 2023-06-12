@@ -17,7 +17,7 @@
  *   - SQLite
  *    
  * Copyright 2023 Ron[ny] Pinkas <ron@ronpinkas.com>
- * www - https://www.ronpinkas.com
+ * www - https://github.com/ronpinkas/dbBridge
  * 
  * MIT License
  *  
@@ -27,7 +27,7 @@
  * @version 0.8.0 (woring version)
  * @license MIT License <https://opensource.org/licenses/MIT>
  * 
- * @link https://www.ronpinkas.com/dbBridge
+ * @link https://github.com/ronpinkas/dbBridge
  */
 declare( strict_types = 1 );
 namespace dbBridge;

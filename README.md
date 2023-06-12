@@ -76,7 +76,7 @@ This project is licensed under the MIT License. See the LICENSE file for details
 
 Author: Ron[ny] Pinkas
 Email: ron@ronpinkas.com
-Website: https://www.ronpinkas.com
+Website: https://github.com/ronpinkas/dbBridge
 
 ## Acknowledgments
 

@@ -17,7 +17,7 @@
  *   - SQLite
  *    
  * Copyright 2023 Ron[ny] Pinkas <ron@ronpinkas.com>
- * www - https://www.ronpinkas.com
+ * www - https://github.com/ronpinkas/dbBridge
  * 
  * This file imlements the stdTypes class for dbBridge. This class defines 
  * the standard types used by dbBridge as an interim representation in converting
@@ -27,7 +27,7 @@
  * @version 0.8.0 (working version)
  * @license MIT License <https://opensource.org/licenses/MIT>
  * 
- * @link https://www.ronpinkas.com/dbBridge
+ * @link https://github.com/ronpinkas/dbBridge
  */
 
 declare( strict_types = 1 );

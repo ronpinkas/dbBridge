@@ -2,14 +2,14 @@
     "name": "ronpinkas/dbbridge",
     "description": "An abstraction bridge between multiple SQL dialects using PDO (native and ODBC) drivers.",
     "type": "library",
-    "keywords": ["database", "SQL", "PDO", "dbBridge"],
-    "homepage": "https://www.ronpinkas.com/dbBridge",
+    "keywords": ["database", "migration", "import", "MySql", "MsSql", "PostgreSQL", "Oracle", "Sqlite", "SQL", "PDO", "dbBridge"],
+    "homepage": "https://github.com/ronpinkas/dbBridge",
     "license": "MIT",
     "authors": [
         {
             "name": "Ronny Pinkas",
             "email": "ron@ronpinkas.com",
-            "homepage": "https://www.ronpinkas.com",
+            "homepage": "https://github.com/ronpinkas/dbBridge",
             "role": "Developer"
         }
     ],

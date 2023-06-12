@@ -17,7 +17,7 @@
  *   - SQLite
  *    
  * Copyright 2023 Ron[ny] Pinkas <ron@ronpinkas.com>
- * www - https://www.ronpinkas.com
+ * www - https://github.com/ronpinkas/dbBridge
  * 
  * MIT License
  * 

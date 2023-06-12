@@ -210,8 +210,7 @@ databases from one SQL dialect to another.
 
 ### Which SQL dialects are supported by dbBridge?
 As of the current version, dbBridge supports SQL dialects that are compatible with PHP's PDO drivers,
-including MySQL and MSSQL through native and ODBC drivers. The library's capabilities might be extended
-in the future.
+including MySQL, MSSQL, Oracle, PostgreSQL, and Sqlite through native and/or ODBC drivers. The library's capabilities might be extended in the future.
 
 ### Are there any limitations on the database structures that can be imported using dbBridge?
 Yes, the current version of dbBridge has some limitations. It does not support the import of Stored

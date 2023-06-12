@@ -1,12 +1,21 @@
 <?php
 /**
- *  dbBrige - An abstraction bridge between multiple SQL dialects using
- *  PDO (native and odbc) drivers with just one user class and 3 lines of code: 
+ * dbBridge is an educational proof-of-concept PHP library that serves as an 
+ * abstraction bridge between multiple SQL dialects using PDO (native and ODBC)
+ * drivers. It enables importing a database from a source to a target with just
+ * one user class and three lines of code: 
  * 
- *      $dbSource = new dbAbstractor( $pdoMsSql [, 'YourDB-Name' ] );
- *      $dbTarget = new dbAbstractor( $pdoMySql );
+ *      $dbSource = new dbAbstractor( $pdoSourceSql [, 'YourDB-Name' ] );
+ *      $dbTarget = new dbAbstractor( $pdoTargetSql );
  *      $dbTarget->importDb( $dbSource );
- *   
+ *
+ * Supported SQL dialects:
+ *   - MySQL
+ *   - Microsoft SQL Server
+ *   - Oracle
+ *   - PostgreSQL
+ *   - SQLite
+ *    
  * Copyright 2023 Ron[ny] Pinkas <ron@ronpinkas.com>
  * www - https://www.ronpinkas.com
  * 
@@ -274,33 +283,5 @@ function stdTypeTo_mysqlType( string $stdType ): string
     }
 
     return $stdTypeToMysqlType[$stdType] ?? 'varchar';
-}
-
-/**
- * FUNCTION: openMySqlDb( string $host, string $dbName , string $port, string $userName, string $password, int $timeout = 600 ) : PDO
- * 
- * Open a connection to a MySQL database.
- * 
- * @param string $host
- * @param string $dbName
- * @param string $port
- * @param string $userName
- * @param string $password
- * @param int $timeout
- * @return PDO
- */
-function openMySqlDb( string $host, string $dbName , string $port, string $userName, string $password, int $timeout = 600 ): PDO 
-{
-    $dsn = 'mysql:host=' . $host . ';dbname=' . $dbName  . ';port=' . $port .',' . $userName . ',' . $password;
-
-    try
-    {
-        $pdo = openDb( $dsn, $userName, $password );
-        return $pdo;
-    }
-    catch( Exception $e )
-    {
-        throw new dbBridgeException( __METHOD__ . ' Failed!' , 0, $e );
-    }    
 }
 ?>

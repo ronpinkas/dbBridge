@@ -1,21 +1,41 @@
 <?php
 /**
- *  dbBrige - An abstraction bridge between multiple SQL dialects using
- *  PDO (native and odbc) drivers with just one user class and 3 lines of code: 
- * 
- *      $dbSource = new dbAbstractor( $pdoMsSql [, 'YourDB-Name' ] );
- *      $dbTarget = new dbAbstractor( $pdoMySql );
+ * dbBridge is an educational proof-of-concept PHP library that serves as an 
+ * abstraction bridge between multiple SQL dialects using PDO (native and ODBC)
+ * drivers. It enables importing a database from a source to a target with just
+ * one user class and three lines of code: 
+ *  
+ *      $dbSource = new dbAbstractor( $pdoSourceSql [, 'YourDB-Name' ] );
+ *      $dbTarget = new dbAbstractor( $pdoTargetSql );
  *      $dbTarget->importDb( $dbSource );
- *   
+ *
+ * Supported SQL dialects:
+ *   - MySQL
+ *   - Microsoft SQL Server
+ *   - Oracle
+ *   - PostgreSQL
+ *   - SQLite
+ * 
+ * Known Limitations:
+ * This library is an educational proof of concept prototype, and has the following known limitations:
+ * - No support for Stored Procedures.
+ * - No support for Triggers.
+ * - No support for Indexes.
+ * - No support for Constraints.
+ * - No support for Sequences.
+ * - No support for Foreign Keys.
+ * - No support for Views.
+ * - No support for Functions.
+ * - No support for User-defined Types.
+ * - No support for User-defined Aggregates.
+ *    
  * Copyright 2023 Ron[ny] Pinkas <ron@ronpinkas.com>
  * www - https://www.ronpinkas.com
  * 
- * MIT License
- * 
- * This file contains the main class of the dbBridge package.
+ * This file contains dbAbstractor - the main class of the dbBridge package.
  * 
  * @package dbBridge
- * @version 0.8.0 (woring version)
+ * @version 0.8.0 (working version)
  * @license MIT License <https://opensource.org/licenses/MIT>
  * 
  * @link https://www.ronpinkas.com/dbBridge
@@ -28,7 +48,6 @@ USE \PDOStatement;
 USE \PDOException;
 USE \Exception;
 
-
 USE \DateTime;
 USE \DateTimeZone;
 USE \DateInterval;
@@ -40,19 +59,14 @@ require_once 'dbb.err.php';
 // Utility functions
 require_once 'dbb.funcs.php';
 
-// The odbc dbBridge dbDriver
-require_once 'dbb.odbc.php';
-
-/*
-  Explictly used in the test function (openMsSqlDb & openMySqlDb) 
-  - otherwise not needed.
-*/
-require_once 'dbb.mssql.php';
-require_once 'dbb.mysql.php';
-
 /*
 Loaded in R/T by dbAbstractor as needed.
 
+// The odbc dbBridge dbDriver
+require_once 'dbb.odbc.php';
+
+require_once 'dbb.mssql.php';
+require_once 'dbb.mysql.php';
 require_once 'dbb.oracle.php';
 require_once 'dbb.pgsql.php';
 require_once 'dbb.sql.php';
@@ -94,7 +108,8 @@ class dbAbstractor
             $this->driverName = $pdo->getAttribute( PDO::ATTR_DRIVER_NAME );
 
             // Check if a file dbb.{driverName}.php exists. If so, include it.
-            $driverFile = "dbb.$this->driverName.php";
+            $driverFile = __DIR__ . "/dbb.$this->driverName.php";
+
             if( file_exists( $driverFile ) )
             {
                 require_once $driverFile;
@@ -102,7 +117,7 @@ class dbAbstractor
             else
             {
                 // Will be wrapped in a dbBridgeException in catch below.
-                throw new Exception( "Driver file $driverFile not found" );
+                throw new Exception( "Driver file '$driverFile' not found" );
             }
 
             $this->driver = match ( $this->driverName ) 
@@ -322,13 +337,10 @@ class dbAbstractor
                 log_dbBridge( "Creating migration plan for table: $table_name From: '$sourceDialect' To: '$targetDialect'" . PHP_EOL, debugFlags::DEBUG_ALWAYS ); 
                 $sourceImportDefinitions = transformTableColumnDefs( $sourceTableDefinitions, $sourceDialect, $targetDialect );
                 
-                log_dbBridge( "Creating Table: $table_name" . PHP_EOL, debugFlags::DEBUG_ALWAYS );
                 createTable( $this->pdo, $table_name , $sourceImportDefinitions, $this->driverName );
-
-                log_dbBridge( "Importing data for table: $table_name" . PHP_EOL, debugFlags::DEBUG_ALWAYS );
+                
                 importTable( $dbSource->pdo, $this->pdo, $table_name, $sourceImportDefinitions, $this->getDialect() );
 
-                log_dbBridge( "Saving dbBridge_schema for table: $table_name" . PHP_EOL, debugFlags::DEBUG_ALWAYS );                
                 tableSave_dbBridgeSchema( $this->pdo, $table_name, $sourceImportDefinitions );
             }
 
@@ -863,6 +875,8 @@ function tableCreate_dbBridgeSchema( PDO $pdo) : bool
  */
 function tableSave_dbBridgeSchema( PDO $pdo, string $tableName, array $tableColumns )
 {        
+    log_dbBridge( "Saving dbBridge_schema for table: $tableName" . PHP_EOL, debugFlags::DEBUG_ALWAYS );                
+
     foreach( $tableColumns as $column )
     {
         $query = $pdo->prepare("
@@ -918,88 +932,58 @@ function tableLoad_dbBridgeSchema( PDO $pdo, string $tableName ) : array
 }
 
 /**
- * FUNCTION test_dbBridge() : int
+ * FUNCTION: openMySql( string $host, string $dbName , string $port, string $userName, string $password, int $timeout = 600 ) : PDO
  * 
- * Tests the dbBridge Migration functionality.
+ * Open a connection to a MySQL database.
  * 
- * @return int
+ * @param string $host
+ * @param string $dbName
+ * @param string $port
+ * @param string $userName
+ * @param string $password
+ * @param int $timeout
+ * @return PDO
  */
-function test_dbBridge() : int  
+function openMySql( string $host, string $dbName , string $port, string $userName, string $password, int $timeout = 600 ): PDO 
 {
-    try 
-    {        
-        // Enable error reporting
-        error_reporting( E_ALL );
+    $dsn = 'mysql:host=' . $host . ';dbname=' . $dbName  . ';port=' . $port .',' . $userName . ',' . $password;
 
-        // Enable error display
-        ini_set( 'display_errors', '1' );
-
-        // Set the custom error handler and interrupt handler
-        set_error_handler( 'dbBridge\\error2Exception' );
-        pcntl_signal( SIGINT, 'dbBridge\\handleInterrupt' );
-
-        // Clear the log files
-        file_put_contents( 'dbBridge.log', '' );
-        file_put_contents( 'dbb.error.log', '' );
-        
-        LoadEnvFile( 'db_source.env' );
-
-        $pdoMsSql = openMsSqlDb( $_ENV['DB_DSN'], $_ENV['DB_NAME'], $_ENV['DB_USER'], $_ENV['DB_PASS'] );
-        $dbMsSql = new dbAbstractor( $pdoMsSql, $_ENV['DB_NAME'] );
-        
-        // Will override existing values - so source and target can use same names!
-        LoadEnvFile( 'db_target.env' );
-
-        $pdoMySql = openMySqlDb( $_ENV[ 'DB_HOST' ], $_ENV[ 'DB_NAME' ] , $_ENV[ 'DB_PORT' ], $_ENV[ 'DB_USER' ], $_ENV[ 'DB_PASS' ] );
-        $dbMySql = new dbAbstractor( $pdoMySql, $_ENV['DB_NAME'] );
-
-        /*
-        // Levels of debug information MASKS
-        const DEBUG_TRANSFORM_RESERVED    = 4;
-        const DEBUG_TRANSFORM_SOURCE      = 8;
-        const DEBUG_TRANSFORM_TARGET      = 16;
-        const DEBUG_TRANSFORM_TRANSFORMED = 32;
-        // Mask for all levels of Transform debug information
-        const DEBUG_TRANSFORM_ALL         = 60;   
-
-        const DEBUG_QUERY_CREATE          = 64;    
-        const DEBUG_QUERY_SELECT          = 128;
-        const DEBUG_QUERY_INSERT          = 256;
-        const DEBUG_QUERY_ALL             = 448;
-
-        const DEBUG_OVERWRITE             = 512; 
-        const DEBUG_BIND                  = 1024;
-        const DEBUG_EXECUTE               = 2048;
-        const DEBUG_FETCH                 = 4096;
-        const DEBUG_FIXME                 = 8192;
-        const DEBUG_IMPORT_ROW            = 16384;
-        const DEBUG_GC                    = 32768;
-    
-        // Mask for all levels of debug information
-        const DEBUG_ALL                  = 65535;
-        */
-
-        // Default to required levels of debug trace to dbBridge.log and/or show to terminal.
-        debugFlags::setDebugLogFlags( debugFlags::DEBUG_IMPORT_ROW | debugFlags::DEBUG_QUERY_ALL  );
-        debugFlags::setDebugShowFlags( debugFlags::DEBUG_IMPORT_ROW );
-
-        // Perform the migration process...
-        $dbMySql->importDb( $dbMsSql );
+    try
+    {
+        $pdo = openDb( $dsn, $userName, $password );
+        return $pdo;
     }
-    catch ( Exception $e ) 
+    catch( Exception $e )
     {
         throw new dbBridgeException( __METHOD__ . ' Failed!' , 0, $e );
-    }
-
-    return 0;
+    }    
 }
 
-function main() : int
+/**
+ * FUNCTION: openODBC( string $dsnName, string $dbName, string $userName, string $password, int $timeout = 600 ) : PDO
+ * 
+ * Open a connection to a Microsoft SQL Server database.
+ * 
+ * @param string $dsnName
+ * @param string $dbName
+ * @param string $userName
+ * @param string $password
+ * @param int $timeout
+ * 
+ * @return PDO
+ */
+function openODBC( string $dsnName, string $dbName, string $userName, string $password, int $timeout = 600 ) : PDO
 {
-    $exitCode = test_dbBridge();
+    $dsn = 'odbc:DSN=' . $dsnName . ';Database=' . $dbName;
 
-    return $exitCode;
+    try
+    {
+        $pdo = openDb( $dsn, $userName, $password );
+        return $pdo;
+    }
+    catch( Exception $e )
+    {        
+        throw new dbBridgeException( __METHOD__ . ' Failed!' , 0, $e );
+    }
 }
-
-return main();
 ?>

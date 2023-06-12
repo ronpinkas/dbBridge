@@ -1,5 +1,5 @@
 {
-    "name": "RonPinkas/dbbridge",
+    "name": "ronpinkas/dbbridge",
     "description": "An abstraction bridge between multiple SQL dialects using PDO (native and ODBC) drivers.",
     "type": "library",
     "keywords": ["database", "SQL", "PDO", "dbBridge"],

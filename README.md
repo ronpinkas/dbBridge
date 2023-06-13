@@ -15,7 +15,7 @@ dbBridge is an educational proof-of-concept PHP library that serves as an abstra
 
 If you are using Composer, you can add `dbBridge` to your project by running:
 
-    composer require yourusername/dbbridge
+    composer require ronpinkas/dbbridge
 
 
 ### Manual Installation

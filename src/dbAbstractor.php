@@ -32,6 +32,9 @@
  * Copyright 2023 Ron[ny] Pinkas <ron@ronpinkas.com>
  * www - https://github.com/ronpinkas/dbBridge
  * 
+ * Acknowledgments:
+ * This code benefited from research time supported by https://www.omie.com.br
+ * 
  * This file contains dbAbstractor - the main class of the dbBridge package.
  * 
  * @package dbBridge

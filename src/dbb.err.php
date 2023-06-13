@@ -19,8 +19,9 @@
  * Copyright 2023 Ron[ny] Pinkas <ron@ronpinkas.com>
  * www - https://github.com/ronpinkas/dbBridge
  * 
- * MIT License
- * 
+ * Acknowledgments:
+ * This code benefited from research time supported by https://www.omie.com.br
+ *
  * This file contains Error Trapping and Exception Handling's 
  * support functions for dbBridge.
  * 

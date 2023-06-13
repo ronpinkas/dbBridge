@@ -19,6 +19,9 @@
  * Copyright 2023 Ron[ny] Pinkas <ron@ronpinkas.com>
  * www - https://github.com/ronpinkas/dbBridge
  * 
+ * Acknowledgments:
+ * This code benefited from research time supported by https://www.omie.com.br
+ *
  * This file imlements the stdTypes class for dbBridge. This class defines 
  * the standard types used by dbBridge as an interim representation in converting
  * from one SQL dialect to another.   

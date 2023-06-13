@@ -80,6 +80,9 @@ Website: https://github.com/ronpinkas/dbBridge
 
 ## Acknowledgments
 
+- Special thanks to https://www.omie.com.br for supporting the research time which contributed
+  to the development of this project.
+
 - Thanks to OpenAI's GPT model for assistance with PHP documentation and code samples, 
   as well as advice and assistance in generating documentation reading the project for
   distribution with Compser.

@@ -3,7 +3,7 @@
 ![Version](https://img.shields.io/badge/version-0.8.0-brightgreen.svg?style=flat-square)
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)
 
-dbBridge is an educational proof-of-concept PHP library that serves as an abstraction bridge between multiple SQL dialects using PDO (native and ODBC) drivers. It enables importing a database from a source to a target with just one user class and three lines of code. 
+dbBridge is an 'SQL Migration Tool' - enabling import of SQL Databases from any supported Dialect to any of the supported Dialects with just three lines of PHP code.
 
 ## Prerequisites
 

@@ -3,7 +3,7 @@
 ![Version](https://img.shields.io/badge/version-0.8.0-brightgreen.svg?style=flat-square)
 ![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg?style=flat-square)
 
-dbBridge is an 'SQL Migration Tool' - enabling import of SQL Databases from any supported Dialect to any of the supported Dialects with just three lines of PHP code.
+dbBridge is an 'SQL Migration Tool' - enabling import of SQL Databases from any supported Dialect (MsSql, MySql, Oracle, PostgreSQL, Sqlite) to any of these supported dialects with just three lines of PHP code.
 
 ## Prerequisites
 

@@ -85,7 +85,7 @@ Website: https://github.com/ronpinkas/dbBridge
 
 - Thanks to OpenAI's GPT model for assistance with PHP documentation and code samples, 
   as well as advice and assistance in generating documentation reading the project for
-  distribution with Compser.
+  distribution with Composer.
 
 A big thank you to the community for your support!
 
